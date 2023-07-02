@@ -1,0 +1,646 @@
+@charset "UTF-8";
+/*
+  Made by Elly Loel - https://ellyloel.com/
+  With inspiration from:
+    - Josh W Comeau - https://courses.joshwcomeau.com/css-for-js/treasure-trove/010-global-styles/
+    - Andy Bell - https://piccalil.li/blog/a-modern-css-reset/
+    - Adam Argyle - https://unpkg.com/open-props@1.3.16/normalize.min.css / https://codepen.io/argyleink/pen/KKvRORE
+
+  Notes:
+    - `:where()` is used to lower specificity for easy overriding.
+*/
+* {
+  /* Remove default margin on everything */
+  margin: 0;
+  /* Remove default padding on everything */
+  padding: 0;
+  /* Calc `em` based line height, bigger line height for smaller font size and smaller line height for bigger font size: https://kittygiraudel.com/2020/05/18/using-calc-to-figure-out-optimal-line-height/ */
+  line-height: calc(0.25rem + 1em + 0.25rem);
+}
+
+/* Use a more-intuitive box-sizing model on everything */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+/* Remove border and set sensible defaults for backgrounds, on all elements except fieldset progress and meter */
+*:where(:not(fieldset, progress, meter)) {
+  border-width: 0;
+  border-style: solid;
+  background-origin: border-box;
+  background-repeat: no-repeat;
+}
+
+html {
+  /* Allow percentage-based heights in the application */
+  block-size: 100%;
+  /* Making sure text size is only controlled by font-size */
+  -webkit-text-size-adjust: none;
+}
+
+/* Smooth scrolling for users that don't prefer reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+}
+body {
+  /* Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+  /* https://marco.org/2012/11/15/text-rendering-optimize-legibility */
+  text-rendering: optimizeSpeed;
+  /* Allow percentage-based heights in the application */
+  min-block-size: 100%;
+  /* https://developer.mozilla.org/en-US/docs/Web/CSS/scrollbar-gutter#example_2 */
+  /* scrollbar-gutter: stable both-edges; Removed until this bug is fixed: https://bugs.chromium.org/p/chromium/issues/detail?id=1318404#c2 */
+}
+
+/* Improve media defaults */
+:where(img, svg, video, canvas, audio, iframe, embed, object) {
+  display: block;
+}
+
+:where(img, svg, video) {
+  block-size: auto;
+  max-inline-size: 100%;
+}
+
+/* Remove stroke and set fill colour to the inherited font colour */
+:where(svg) {
+  stroke: none;
+  fill: currentColor;
+}
+
+/* SVG's without a fill attribute */
+:where(svg):where(:not([fill])) {
+  /* Remove fill and set stroke colour to the inherited font colour */
+  stroke: currentColor;
+  fill: none;
+  /* Rounded stroke */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Set a size for SVG's without a width attribute */
+:where(svg):where(:not([width])) {
+  inline-size: 5rem;
+}
+
+/* Remove built-in form typography styles */
+:where(input, button, textarea, select),
+:where(input[type=file])::-webkit-file-upload-button {
+  color: inherit;
+  font: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+}
+
+/* Change textarea resize to vertical only and block only if the browser supports that */
+:where(textarea) {
+  resize: vertical;
+}
+
+@supports (resize: block) {
+  :where(textarea) {
+    resize: block;
+  }
+}
+/* Avoid text overflows */
+:where(p, h1, h2, h3, h4, h5, h6) {
+  overflow-wrap: break-word;
+}
+
+/* Fix h1 font size inside article, aside, nav, and section */
+h1 {
+  font-size: 2em;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+:where(ul, ol)[role=list] {
+  list-style: none;
+}
+
+/* More readable underline style for anchor tags without a class. This could be set on anchor tags globally, but it can cause conflicts. */
+a:not([class]) {
+  -webkit-text-decoration-skip: ink;
+          text-decoration-skip-ink: auto;
+}
+
+/* Make it clear that interactive elements are interactive */
+:where(a[href], area, button, input, label[for], select, summary, textarea, [tabindex]:not([tabindex*="-"])) {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+:where(input[type=file]) {
+  cursor: auto;
+}
+
+:where(input[type=file])::-webkit-file-upload-button,
+:where(input[type=file])::file-selector-button {
+  cursor: pointer;
+}
+
+/* Animate focus outline */
+@media (prefers-reduced-motion: no-preference) {
+  :focus-visible {
+    transition: outline-offset 145ms cubic-bezier(0.25, 0, 0.4, 1);
+  }
+  :where(:not(:active)):focus-visible {
+    transition-duration: 0.25s;
+  }
+}
+:where(:not(:active)):focus-visible {
+  outline-offset: 5px;
+}
+
+/* Make sure users can't select button text */
+:where(button, button[type], input[type=button], input[type=submit], input[type=reset]),
+:where(input[type=file])::-webkit-file-upload-button,
+:where(input[type=file])::file-selector-button {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+          user-select: none;
+  text-align: center;
+}
+
+/* Disabled cursor for disabled buttons */
+:where(button, button[type], input[type=button], input[type=submit], input[type=reset])[disabled] {
+  cursor: not-allowed;
+}
+
+/* アニメーションクラス */
+.fadeIn {
+  animation-name: fadeInAnime;
+  animation-duration: 10s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  opacity: 0;
+}
+
+@keyframes fadeInAnime {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.fadeOut {
+  animation-name: fadeOutAnime;
+  animation-duration: 10s;
+  animation-fill-mode: forwards;
+  opacity: 1;
+}
+
+@keyframes fadeOutAnime {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+/* 拡大 */
+.zoomIn {
+  animation-name: zoomInAnime;
+  animation-duration: 10s;
+  animation-fill-mode: forwards;
+}
+
+.slider {
+  height: 100vh;
+  margin-inline: auto;
+  overflow: hidden; /* 画像がはみ出ないようにする */
+}
+@media screen and (max-width: 1200px) {
+  .slider {
+    height: 700px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .slider {
+    height: 100vh;
+  }
+}
+
+.slick-img img {
+  width: 100%;
+}
+
+@keyframes zoomUp {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.15); /* 拡大率 */
+  }
+}
+.add-animation {
+  animation: zoomUp 10s linear 0s normal both;
+}
+
+@keyframes zoomInAnime {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+/*遅延アニメーション  */
+.delay-time02 {
+  animation-delay: 10s;
+}
+
+.delay-time04 {
+  animation-delay: 20s;
+}
+
+.delay-time06 {
+  animation-delay: 30s;
+}
+
+.delay-time08 {
+  animation-delay: 0.8s;
+}
+
+.fadeUp {
+  animation-name: fadeUpAnime;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes fadeUpAnime {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/*左から */
+.fadeLeft {
+  animation-name: fadeLeftAnime;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes fadeLeftAnime {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* 右から */
+.fadeRight {
+  animation-name: fadeRightAnime;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes fadeRightAnime {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* 　Y 軸（横へ） */
+.rotateY {
+  animation-name: rotateYAnime;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes rotateYAnime {
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(-360deg);
+  }
+}
+/* 上から */
+.fadeDown {
+  animation-name: fadeDownAnime;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes fadeDownAnime {
+  from {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* スクロールをしたら出現する要素にはじめに透過0を指定　*/
+#fadeInTrigger,
+#fadeLeftTrigger,
+#fadeRightTrigger,
+#fadeDownTrigger,
+#fadeUpTrigger {
+  opacity: 0;
+}
+
+/* ハンバーガーメニュー */
+.openbtn1 {
+  display: none;
+  position: relative;
+  /*ボタン内側の基点となるためrelativeを指定*/
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 10px;
+}
+@media screen and (max-width: 768px) {
+  .openbtn1 {
+    display: block;
+  }
+}
+
+/*ボタン内側*/
+.openbtn1 span {
+  display: inline-block;
+  transition: all 0.4s;
+  /*アニメーションの設定*/
+  position: absolute;
+  left: 14px;
+  height: 3px;
+  border-radius: 2px;
+  background: #fff;
+  width: 45%;
+}
+
+.openbtn1 span.line-color {
+  background-color: #000;
+}
+
+.openbtn1 span:nth-of-type(1) {
+  top: 15px;
+}
+
+.openbtn1 span:nth-of-type(2) {
+  top: 23px;
+}
+
+.openbtn1 span:nth-of-type(3) {
+  top: 31px;
+}
+
+/*activeクラスが付与されると線が回転して×に*/
+.openbtn1.active span:nth-of-type(1) {
+  top: 18px;
+  left: 18px;
+  transform: translateY(6px) rotate(-45deg);
+  width: 30%;
+}
+
+.openbtn1.active span:nth-of-type(2) {
+  opacity: 0;
+  /*真ん中の線は透過*/
+}
+
+.openbtn1.active span:nth-of-type(3) {
+  top: 30px;
+  left: 18px;
+  transform: translateY(-6px) rotate(45deg);
+  width: 30%;
+}
+
+.modal-mask {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 13;
+}
+
+.modal {
+  position: relative;
+  height: 100%;
+}
+.modal-inner {
+  position: fixed;
+  z-index: 15;
+  display: none;
+}
+.modal-warp {
+  width: 100%;
+  max-width: 550px;
+  height: 600px;
+  margin: 0 auto;
+  top: 2%;
+  left: 33%;
+  z-index: 11;
+  background-color: #fff;
+  padding: 0 60px;
+}
+.modal-title p {
+  font-size: 20px;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  color: #000;
+  border-bottom: 1px solid #E7E7E7;
+  text-align: center;
+  padding: 25px 0;
+}
+.modal-data-list dt {
+  margin-bottom: 12px;
+}
+.modal-data-list select,
+.modal-data-list input {
+  border: 1px solid #E7E7E7;
+  width: 100%;
+  margin-bottom: 12px;
+  background-color: #fff;
+  color: #000;
+  border: #E7E7E7 1px solid;
+  padding: 12px 10px;
+}
+.modal-data-list .data-warp {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
+  margin-top: 23px;
+}
+.modal-data-list .data-warp .submit-btn {
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 12px 70px;
+}
+
+.active {
+  display: block;
+}
+
+.pankudu {
+  margin-bottom: 93px;
+  padding-left: 20px;
+}
+
+.header {
+  background-color: #fff;
+}
+.header-menu-item {
+  color: #333;
+}
+
+.page-mainvisurl {
+  position: relative;
+}
+.page-mainvisurl-header-title {
+  color: #fff;
+  font-weight: 900;
+  font-size: 34px;
+  width: -moz-fit-content;
+  width: fit-content;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.service {
+  padding: 33px 0 0 0;
+}
+.service .content-text p {
+  text-align: center;
+  margin-bottom: 76px;
+}
+.service .breadcrumbs {
+  margin-bottom: 93px;
+}
+.service-inner {
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+}
+.service-list-box {
+  display: block;
+  position: relative;
+}
+@media screen and (max-width: 1200px) {
+  .service-list-box-2 {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
+.service-list-item-txt {
+  padding: 55px 143px 108px 238px;
+  background-image: url(../img/bg.png);
+  width: 813px;
+  position: absolute;
+  left: 230px;
+  top: 57px;
+  z-index: -1;
+}
+@media screen and (max-width: 1200px) {
+  .service-list-item-txt {
+    position: static;
+    padding: 55px 20px;
+    margin-top: 50px;
+    max-width: 800px;
+    width: 100%;
+  }
+}
+.service-list-item-txt-2 {
+  position: static;
+  margin-left: 0px;
+  padding: 55px 30px 87px 60px;
+}
+@media screen and (max-width: 1200px) {
+  .service-list-item-txt-2 {
+    margin-left: auto;
+    margin-bottom: 50px;
+  }
+}
+.service .service-list-item-img-2 {
+  position: absolute;
+  right: 0;
+  top: -57px;
+}
+@media screen and (max-width: 1200px) {
+  .service .service-list-item-img-2 {
+    position: static;
+  }
+}
+.service-list-item-img {
+  margin-bottom: 330px;
+  width: 528px;
+}
+@media screen and (max-width: 1200px) {
+  .service-list-item-img {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+.service-title {
+  font-size: 24px;
+  margin-bottom: 46px;
+}
+.service-text {
+  margin-bottom: 46px;
+}
+.service-text-atention {
+  font-size: 14px;
+}
+
+.onsen-kono .inner {
+  border-top: 1px solid #E7E7E7;
+  border-bottom: 1px solid #E7E7E7;
+  padding-top: 90px;
+  margin-bottom: 96.5px;
+}
+.onsen-kono-list {
+  width: 80%;
+  margin: 0 auto;
+  padding: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid #E7E7E7;
+}
+.onsen-kono-title {
+  width: 30%;
+}
+.onsen-kono-data {
+  width: 70%;
+}
+.onsen-kono .service-title {
+  margin: 0 auto;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-bottom: 47.5px;
+}
+.onsen-kono-list:nth-child(3) {
+  border-bottom: 1px solid #E7E7E7;
+  margin-bottom: 74px;
+}/*# sourceMappingURL=page_style.css.map */

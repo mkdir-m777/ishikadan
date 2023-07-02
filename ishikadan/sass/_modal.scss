@@ -1,0 +1,81 @@
+@use "responsive" as*;
+
+// モーダル
+
+.modal-mask{
+    display: none;
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 13;
+}
+.modal {
+    position: relative;
+    height: 100%;
+    &-inner{
+        position: fixed;
+        z-index: 15;
+        display: none;
+    }
+
+    &-warp {
+        width: 100%;
+        max-width: 550px;
+        height: 600px;
+        margin: 0 auto;
+        top: 2%;
+        left: 33%;
+        z-index: 11;
+        background-color: #fff;
+        padding: 0 60px;
+
+    }
+
+    &-title p {
+        font-size: 20px;
+        width: 100%;
+        margin: 0 auto;
+        margin-bottom: 30px;
+        color: #000;
+        border-bottom: 1px solid #E7E7E7;
+        text-align: center;
+        padding: 25px 0;
+    }
+
+    &-data-list {
+        dt {
+            margin-bottom: 12px;
+        }
+
+        select,
+        input {
+            border: 1px solid #E7E7E7;
+            width: 100%;
+            margin-bottom: 12px;
+            background-color: #fff;
+            color: #000;
+            border: #E7E7E7 1px solid;
+            padding: 12px 10px;
+
+        }
+
+        .data-warp {
+            width: fit-content;
+            margin: 0 auto;
+            margin-top: 23px;
+        }
+
+        .data-warp .submit-btn {
+            width: fit-content;
+            margin: 0 auto;
+            padding: 12px 70px;
+
+        }
+    }
+
+}
+.active{
+    display: block;
+}
